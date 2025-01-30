@@ -1,0 +1,78 @@
+def creation_table(n):
+    table=[["x" for i in range(n)]for j in range(n)]
+    for k in range(n):
+        print(table[k],end="\n")
+    return table
+
+
+def rec(table,n,i,j):
+    if j!=0 and i!=0  and i!=n-1 and j!=n-1:
+        if table[i][j-1]=="x":
+            recursivité(table,n,i,j-1) 
+        if table[i][j+1]=="x":
+            recursivité(table,n,i,j+1)
+        if table[i+1][j]=="x":
+            recursivité(table,n,i+1,j)
+        if table[i-1][j]=="x":
+            recursivité(table,n,i-1,j)
+    if i==0 and j!=0 and j!=n-1:
+        if table[i][j-1]=="x":
+            recursivité(table,n,i,j-1) 
+        if table[i][j+1]=="x":
+            recursivité(table,n,i,j+1)
+        if table[i+1][j]=="x":
+            recursivité(table,n,i+1,j)
+    elif j==0 and i!=0 and i!=n-1:
+        if table[i-1][j-1]=="x":
+            recursivité(table,n,i-1,j) 
+        if table[i][j+1]=="x":
+            recursivité(table,n,i,j+1)
+        if table[i+1][j]=="x":
+            recursivité(table,n,i+1,j)
+    elif j==n-1 and i!=0 and i!=n-1:
+        if table[i][j-1]=="x":
+            recursivité(table,n,i,j-1) 
+        if table[i-1][j]=="x":
+            recursivité(table,n,i-1,j)
+        if table[i+1][j]=="x":
+            recursivité(table,n,i+1,j)
+    elif i==n-1 and j!=0 and j!=n-1:
+        if table[i][j-1]=="x":
+            recursivité(table,n,i,j-1) 
+        if table[i][j+1]=="x":
+            recursivité(table,n,i,j+1)
+        if table[i-1][j]=="x":
+            recursivité(table,n,i-1,j)
+##   extrémités des bords
+    elif j==n-1 and i==n-1:
+        if table[i][j-1]=="x":
+            recursivité(table,n,i,j-1) 
+        if table[i-1][j]=="x":
+            recursivité(table,n,i-1,j)
+    elif j==0 and i==0:
+        if table[i][j+1]=="x":
+            recursivité(table,n,i,j+1)
+        if table[i+1][j]=="x":
+            recursivité(table,n,i+1,j)
+    elif j==0 and i==n-1:
+        if table[i][j+1]=="x":
+            recursivité(table,n,i,j+1)
+        if table[i-1][j]=="x":
+            recursivité(table,n,i-1,j)
+    elif j==n-1 and i==0:
+        if table[i][j-1]=="x":
+            recursivité(table,n,i,j-1) 
+        if table[i+1][j]=="x":
+            recursivité(table,n,i+1,j)
+
+def recursivité(table,n,i,j):
+    table[i][j]="0"
+    return rec(table,n,i,j)
+
+
+def final(n,i,j):
+    table=creation_table(n)
+    recursivité(table,n,i,j)
+    for k in range(n):
+        print(table[k],end="\n")
+    return 
