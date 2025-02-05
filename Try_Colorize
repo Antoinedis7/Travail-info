@@ -41,7 +41,7 @@ def recursion(i,j,lines,columns,im):
     if im.getpixel((i,j)) <= 50:  # Base case: pixel colored
         return
     im.putpixel(((i,j)),125)  # Color the current pixel
-    if j != 0 and i != 0 and i != lines-1 and j != colums-1:  # pixels surrounded by pixels
+    if j != 0 and i != 0 and i != lines-1 and j != columns-1:  # pixels surrounded by pixels
         if im.getpixel((i,j-1)) <= 50:
             recursion(i,j-1,lines,columns,im) 
         if im.getpixel((i,j+1)) <= 50:
@@ -57,7 +57,7 @@ def recursion(i,j,lines,columns,im):
             recursion(i,j+1,lines,columns,im)
         if im.getpixel((i+1,j)) <= 50:
             recursion(i+1,j,lines,columns,im)
-    elif j == 0 and i != 0 and i != nlines-1:
+    elif j == 0 and i != 0 and i != lines-1:
         if im.getpixel((i-1,j-1)) <= 50:
             recursion(i-1,j,lines,columns,im) 
         if im.getpixel((i,j+1)) <= 50:
