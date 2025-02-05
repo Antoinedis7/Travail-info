@@ -6,8 +6,8 @@ def color_image(name_image):
     size = image.size
     firstcoord = coord_to_tuple(input(f"Enter coordinates for coloration between {size} (e.g. -> x,y):"))
     final_coordinates = right_seed(firstcoord,image)
-    nlines = size[0]
-    ncolumns = size[1]
+    nlines = size[1]
+    ncolumns = size[0]
     ifinal=final_coordinates[1]
     jfinal=final_coordinates[0]
     recursion (ifinal,jfinal,nlines,ncolumns,image)
@@ -25,14 +25,16 @@ def right_seed(coord,im):
     im.putpixel(coordinates,(110))
     im.show()
     validation = input("Are you happy with the seed position ? Enter True or False :")
-    if validation == True :
+    is_valid = validation == "True"
+    if is_valid :
         return coordinates
     else :
-        while validation != True :
+        while not is_valid :
             coordinates = coord_to_tuple(input("Enter your new coordinates (e.g. -> x,y):"))
             im.putpixel(coordinates,(110))
             im.show()
             validation = input("Are you happy with the seed position ? Enter True or False :")
+            is_valid = validation == "True"
         return coordinates
 
 def recursion(i,j,lines,columns,im):
