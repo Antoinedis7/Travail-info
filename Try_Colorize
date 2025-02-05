@@ -1,86 +1,98 @@
-def creation_table(n):
-    table=[["x" for i in range(n)]for j in range(n)]
-    for k in range(n):
-        print(table[k],end="\n")
-    return table
 from PIL import Image
-im = Image.open("A-28.png")
-print(im.format, im.size, im.mode)
-im.save ("brouillon.png", "PNG")
-##im.putpixel((10,10),(0,0,0))
-##im.save("brouillon.png", "PNG")
-for i in range (600):
-    im.putpixel((i,2),(255,127,0))
-im.save("brouillon.png", "PNG")
-
-def rec(table,n,i,j):
-    if j!=0 and i!=0  and i!=n-1 and j!=n-1:
-        if table[i][j-1]=="x":
-            recursivité(table,n,i,j-1) 
-        if table[i][j+1]=="x":
-            recursivité(table,n,i,j+1)
-        if table[i+1][j]=="x":
-            recursivité(table,n,i+1,j)
-        if table[i-1][j]=="x":
-            recursivité(table,n,i-1,j)
-    if i==0 and j!=0 and j!=n-1:
-        if table[i][j-1]=="x":
-            recursivité(table,n,i,j-1) 
-        if table[i][j+1]=="x":
-            recursivité(table,n,i,j+1)
-        if table[i+1][j]=="x":
-            recursivité(table,n,i+1,j)
-    elif j==0 and i!=0 and i!=n-1:
-        if table[i-1][j-1]=="x":
-            recursivité(table,n,i-1,j) 
-        if table[i][j+1]=="x":
-            recursivité(table,n,i,j+1)
-        if table[i+1][j]=="x":
-            recursivité(table,n,i+1,j)
-    elif j==n-1 and i!=0 and i!=n-1:
-        if table[i][j-1]=="x":
-            recursivité(table,n,i,j-1) 
-        if table[i-1][j]=="x":
-            recursivité(table,n,i-1,j)
-        if table[i+1][j]=="x":
-            recursivité(table,n,i+1,j)
-    elif i==n-1 and j!=0 and j!=n-1:
-        if table[i][j-1]=="x":
-            recursivité(table,n,i,j-1) 
-        if table[i][j+1]=="x":
-            recursivité(table,n,i,j+1)
-        if table[i-1][j]=="x":
-            recursivité(table,n,i-1,j)
-##   extrémités des bords
-    elif j==n-1 and i==n-1:
-        if table[i][j-1]=="x":
-            recursivité(table,n,i,j-1) 
-        if table[i-1][j]=="x":
-            recursivité(table,n,i-1,j)
-    elif j==0 and i==0:
-        if table[i][j+1]=="x":
-            recursivité(table,n,i,j+1)
-        if table[i+1][j]=="x":
-            recursivité(table,n,i+1,j)
-    elif j==0 and i==n-1:
-        if table[i][j+1]=="x":
-            recursivité(table,n,i,j+1)
-        if table[i-1][j]=="x":
-            recursivité(table,n,i-1,j)
-    elif j==n-1 and i==0:
-        if table[i][j-1]=="x":
-            recursivité(table,n,i,j-1) 
-        if table[i+1][j]=="x":
-            recursivité(table,n,i+1,j)
-
-def recursivité(table,n,i,j):
-    table[i][j]="0"
-    return rec(table,n,i,j)
 
 
-def final(n,i,j):
-    table=creation_table(n)
-    recursivité(table,n,i,j)
-    for k in range(n):
-        print(table[k],end="\n")
-    return 
+def color_image(name_image):
+    image = Image.open(name_image)
+    size = image.size
+    firstcoord = coord_to_tuple(input(f"Enter coordinates for coloration between {size} (e.g. -> x,y):"))
+    final_coordinates = right_seed(firstcoord,image)
+    nlines = size[0]
+    ncolumns = size[1]
+    ifinal=final_coordinates[1]
+    jfinal=final_coordinates[0]
+    recursion (ifinal,jfinal,nlines,ncolumns,image)
+    image.save(f"{name_image}_colorized.jpg", "JPEG")
+
+
+def coord_to_tuple (user_input):
+    tab = user_input.split(",")
+    tup = (int(tab[0]),int(tab[1]))
+    return tup
+
+
+def right_seed(coord,im):
+    coordinates = coord
+    im.putpixel(coordinates,(110))
+    im.show()
+    validation = input("Are you happy with the seed position ? Enter True or False :")
+    if validation == True :
+        return coordinates
+    else :
+        while validation != True :
+            coordinates = coord_to_tuple(input("Enter your new coordinates (e.g. -> x,y):"))
+            im.putpixel(coordinates,(110))
+            im.show()
+            validation = input("Are you happy with the seed position ? Enter True or False :")
+        return coordinates
+
+def recursion(i,j,lines,columns,im):
+    if im.getpixel((i,j)) <= 50:  # Base case: pixel colored
+        return
+    im.putpixel(((i,j)),125)  # Color the current pixel
+    if j != 0 and i != 0 and i != lines-1 and j != colums-1:  # pixels surrounded by pixels
+        if im.getpixel((i,j-1)) <= 50:
+            recursion(i,j-1,lines,columns,im) 
+        if im.getpixel((i,j+1)) <= 50:
+            recursion(i,j+1,lines,columns,im)
+        if im.getpixel((i+1,j)) <= 50:
+            recursion(i+1,j,lines,columns,im)
+        if im.getpixel((i-1,j)) <= 50:
+            recursion(i-1,j,lines,columns,im)
+    if i == 0 and j != 0 and j != columns-1:  # pixels at the sides
+        if im.getpixel((i,j-1)) <= 50:
+            recursion(i,j-1,lines,columns,im) 
+        if im.getpixel((i,j+1)) <= 50:
+            recursion(i,j+1,lines,columns,im)
+        if im.getpixel((i+1,j)) <= 50:
+            recursion(i+1,j,lines,columns,im)
+    elif j == 0 and i != 0 and i != nlines-1:
+        if im.getpixel((i-1,j-1)) <= 50:
+            recursion(i-1,j,lines,columns,im) 
+        if im.getpixel((i,j+1)) <= 50:
+            recursion(i,j+1,lines,columns,im)
+        if im.getpixel((i+1,j)) <= 50:
+            recursion(i+1,j,lines,columns,im)
+    elif j == columns-1 and i != 0 and i != lines-1:
+        if im.getpixel((i,j-1)) <= 50:
+            recursion(i,j-1,lines,columns,im) 
+        if im.getpixel((i-1,j)) <= 50:
+            recursion(i-1,j,lines,columns,im)
+        if im.getpixel((i+1,j)) <= 50:
+            recursion(i+1,j,lines,columns,im)
+    elif i == lines-1 and j != 0 and j != columns-1:
+        if im.getpixel((i,j-1)) <= 50:
+            recursion(i,j-1,lines,columns,im) 
+        if im.getpixel((i,j+1)) <= 50:
+            recursion(i,j+1,lines,columns,im)
+        if im.getpixel((i-1,j)) <= 50:
+            recursion(i-1,j,lines,columns,im)
+    elif j == columns-1 and i == lines-1:  # pixels at the corners 
+        if im.getpixel((i,j-1)) <= 50:
+            recursion(i,j-1,lines,columns,im) 
+        if im.getpixel((i-1,j)) <= 50:
+            recursion(i-1,j,lines,columns,im)
+    elif j == 0 and i == 0:
+        if im.getpixel((i,j+1)) <= 50:
+            recursion(i,j+1,lines,columns,im)
+        if im.getpixel((i+1,j)) <= 50:
+            recursion(i+1,j,lines,columns,im)
+    elif j == 0 and i == lines-1:
+        if im.getpixel((i,j+1)) <= 50:
+            recursion(i,j+1,lines,columns,im)
+        if im.getpixel((i-1,j)) <= 50:
+            recursion(i-1,j,lines,columns,im)
+    elif j == columns-1 and i == 0:
+        if im.getpixel((i,j-1)) <= 50:
+            recursion(i,j-1,lines,columns,im) 
+        if im.getpixel((i+1,j)) <= 50:
+            recursion(i+1,j,lines,columns,im)
