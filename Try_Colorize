@@ -2,6 +2,8 @@ from PIL import Image
 
 
 def color_image(name_image):
+    import sys
+    sys.setrecursionlimit(10000)
     image = Image.open(name_image)
     size = image.size
     firstcoord = coord_to_tuple(input(f"Enter coordinates for coloration between {size} (e.g. -> x,y):"))
@@ -10,7 +12,7 @@ def color_image(name_image):
     ncolumns = size[0]
     ifinal=final_coordinates[1]
     jfinal=final_coordinates[0]
-    recursion (ifinal,jfinal,nlines,ncolumns,image)
+    recursion (jfinal,ifinal,ncolumns,nlines,image)
     image.show()
     image.save(f"{name_image}_colorized.jpg", "JPEG")
 
@@ -38,64 +40,75 @@ def right_seed(coord,im):
             is_valid = validation == "True"
         return coordinates
 
-def recursion(i,j,lines,columns,im):
-    if im.getpixel((j, i)) >= 50:  # Base case: pixel colored
+def recursion(j,i,columns,lines,im):
+    if ((im.getpixel((j+1, i)) < 230 or j+1 > columns-1)
+        and (im.getpixel((j-1, i)) < 230 or j-1 < 0)
+        and (im.getpixel((j, i+1)) < 230 or i+1 > lines-1)
+        and (im.getpixel((j, i-1)) < 230 or i-1 < 0)):  # Base case: pixel colored
         return
-    im.putpixel((j, i), 125)  # Color the current pixel
+    im.putpixel(((j,i)),125)
+##    if (im.getpixel((j+1, i)) > 230 and j+1 <= columns-1):
+##        return recursion (j+1,i,columns,lines,im)
+##    if (im.getpixel((j-1, i)) > 230 and j-1 >= 0) :
+##        return recursion (j-1,i,columns,lines,im)
+##    if(im.getpixel((j, i+1)) > 230 and i+1 <= lines-1) :
+##        return recursion (j,i+1,columns,lines,im)
+##    if(im.getpixel((j, i-1)) > 230 and i-1 >= 0) :
+##        return recursion (j,i-1,columns,lines,im)
     if j != 0 and i != 0 and i != lines - 1 and j != columns - 1:  # pixels surrounded by pixels
-        if im.getpixel((j - 1, i)) >= 50:
-            recursion(i, j - 1, lines, columns, im)
-        if im.getpixel((j + 1, i)) >= 50:
-            recursion(i, j + 1, lines, columns, im)
-        if im.getpixel((j, i + 1)) >= 50:
-            recursion(i + 1, j, lines, columns, im)
-        if im.getpixel((j, i - 1)) >= 50:
-            recursion(i - 1, j, lines, columns, im)
+        if im.getpixel((j - 1, i)) >= 200:
+            recursion(j - 1, i, columns, lines, im)
+        if im.getpixel((j + 1, i)) >= 200:
+            recursion(j + 1, i, columns, lines, im)
+        if im.getpixel((j, i + 1)) >= 200:
+            recursion(j, i + 1, columns, lines, im)
+        if im.getpixel((j, i - 1)) >= 200:
+            recursion(j, i - 1, columns, lines, im)
     if i == 0 and j != 0 and j != columns - 1:  # pixels at the sides
-        if im.getpixel((j - 1, i)) >= 50:
-            recursion(i, j - 1, lines, columns, im)
-        if im.getpixel((j + 1, i)) >= 50:
-            recursion(i, j + 1, lines, columns, im)
-        if im.getpixel((j, i + 1)) >= 50:
-            recursion(i + 1, j, lines, columns, im)
+        if im.getpixel((j - 1, i)) >= 200:
+            recursion(j - 1, i, columns, lines, im)
+        if im.getpixel((j + 1, i)) >= 200:
+            recursion(j + 1, i, columns, lines, im)
+        if im.getpixel((j, i + 1)) >= 200:
+            recursion(j, i + 1, columns, lines, im)
     elif j == 0 and i != 0 and i != lines - 1:
-        if im.getpixel((j, i - 1)) >= 50:
-            recursion(i - 1, j, lines, columns, im)
-        if im.getpixel((j + 1, i)) >= 50:
-            recursion(i, j + 1, lines, columns, im)
-        if im.getpixel((j, i + 1)) >= 50:
-            recursion(i + 1, j, lines, columns, im)
+        if im.getpixel((j, i - 1)) >= 200:
+            recursion(j, i - 1, columns, lines, im)
+        if im.getpixel((j + 1, i)) >= 200:
+            recursion(j + 1, i, columns, lines, im)
+        if im.getpixel((j, i + 1)) >= 200:
+            recursion(j, i + 1, columns, lines, im)
     elif j == columns - 1 and i != 0 and i != lines - 1:
-        if im.getpixel((j - 1, i)) >= 50:
-            recursion(i, j - 1, lines, columns, im)
-        if im.getpixel((j, i - 1)) >= 50:
-            recursion(i - 1, j, lines, columns, im)
-        if im.getpixel((j, i + 1)) >= 50:
-            recursion(i + 1, j, lines, columns, im)
+        if im.getpixel((j - 1, i)) >= 200:
+            recursion(j - 1, i, columns, lines, im)
+        if im.getpixel((j, i - 1)) >= 200:
+            recursion(j, i - 1, columns, lines, im)
+        if im.getpixel((j, i + 1)) >= 200:
+            recursion(j, i + 1, columns, lines, im)
     elif i == lines - 1 and j != 0 and j != columns - 1:
-        if im.getpixel((j - 1, i)) >= 50:
-            recursion(i, j - 1, lines, columns, im)
-        if im.getpixel((j + 1, i)) >= 50:
-            recursion(i, j + 1, lines, columns, im)
-        if im.getpixel((j, i - 1)) >= 50:
-            recursion(i - 1, j, lines, columns, im)
+        if im.getpixel((j - 1, i)) >= 200:
+            recursion(j - 1, i, columns, lines, im)
+        if im.getpixel((j + 1, i)) >= 200:
+            recursion(j + 1, i, columns, lines, im)
+        if im.getpixel((j, i - 1)) >= 200:
+            recursion(j, i - 1, columns, lines, im)
     elif j == columns - 1 and i == lines - 1:  # pixels at the corners
-        if im.getpixel((j - 1, i)) >= 50:
-            recursion(i, j - 1, lines, columns, im)
-        if im.getpixel((j, i - 1)) >= 50:
-            recursion(i - 1, j, lines, columns, im)
+        if im.getpixel((j - 1, i)) >= 200:
+            recursion(j - 1, i, columns, lines, im)
+        if im.getpixel((j, i - 1)) >= 200:
+            recursion(j, i - 1, columns, lines, im)
     elif j == 0 and i == 0:
-        if im.getpixel((j + 1, i)) >= 50:
-            recursion(i, j + 1, lines, columns, im)
-        if im.getpixel((j, i + 1)) >= 50:
-            recursion(i + 1, j, lines, columns, im)
+        if im.getpixel((j + 1, i)) >= 200:
+            recursion(j + 1, i, columns, lines, im)
+        if im.getpixel((j, i + 1)) >= 200:
+            recursion(j, i + 1, columns, lines, im)
     elif j == 0 and i == lines - 1:
-        if im.getpixel((j + 1, i)) >= 50:
-            recursion(i, j + 1, lines, columns, im)
-        if im.getpixel((j, i - 1)) >= 50:
-            recursion(i - 1, j, lines, columns, im)
+        if im.getpixel((j + 1, i)) >= 200:
+            recursion(j + 1, i, columns, lines, im)
+        if im.getpixel((j, i - 1)) >= 200:
+            recursion(j, i - 1, columns, lines, im)
     elif j == columns - 1 and i == 0:
-        if im.getpixel((j - 1, i)) >= 50:
-            recursion(i, j - 1, lines, columns, im)
-        if im.getpixel((j, i + 1)) >= 50:
-            recursion(i + 1, j, lines, columns, im)
+        if im.getpixel((j - 1, i)) >= 200:
+            recursion(j - 1, i, columns, lines, im)
+        if im.getpixel((j, i + 1)) >= 200:
+            recursion(j, i + 1, columns, lines, im)
