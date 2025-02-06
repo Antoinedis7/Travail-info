@@ -23,6 +23,9 @@ def coord_to_tuple (user_input):
     return tup
 
 
+return color_image(j+1,i,im), color_image(j,i+1, im)
+
+
 def right_seed(coord,im):
     coordinates = coord
     im.putpixel(coordinates,(110))
