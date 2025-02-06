@@ -1,1 +1,58 @@
+from PIL import Image
 
+
+def color_image(name_image):
+    import sys
+    sys.setrecursionlimit(100000)
+    image = Image.open(name_image)
+    size = image.size
+    firstcoord = coord_to_tuple(input(f"Enter coordinates for coloration between {size} (e.g. -> x,y):"))
+    final_coordinates = right_seed(firstcoord,image)
+    nlines = size[1]
+    ncolumns = size[0]
+    ifinal=final_coordinates[1]
+    jfinal=final_coordinates[0]
+    recursion (jfinal,ifinal,ncolumns,nlines,image)
+    image.show()
+    image.save(f"{name_image}_colorized.jpg", "JPEG")
+
+
+def coord_to_tuple (user_input):
+    tab = user_input.split(",")
+    tup = (int(tab[0]),int(tab[1]))
+    return tup
+
+
+def right_seed(coord,im):
+    coordinates = coord
+    im.putpixel(coordinates,(110))
+    im.show()
+    validation = input("Are you happy with the seed position ? Enter True or False :")
+    is_valid = validation == "True"
+    if is_valid :
+        return coordinates
+    else :
+        while not is_valid :
+            coordinates = coord_to_tuple(input("Enter your new coordinates (e.g. -> x,y):"))
+            im.putpixel(coordinates,(110))
+            im.show()
+            validation = input("Are you happy with the seed position ? Enter True or False :")
+            is_valid = validation == "True"
+        return coordinates
+
+def recursion(j,i,columns,lines,im):
+    if (j+1 >= columns or im.getpixel((j+1, i)) < 180) and \
+       (j-1 < 0 or im.getpixel((j-1, i)) < 180) and \
+       (i+1 >= lines or im.getpixel((j, i+1)) < 180) and \
+       (i-1 < 0 or im.getpixel((j, i-1)) < 180):
+        im.putpixel(((j,i)),125)
+        return
+    im.putpixel(((j,i)),125)  # pixel coloration
+    if (im.getpixel((j+1, i)) > 180 and j+1 < columns):
+        return recursion (j+1,i,columns,lines,im)
+    if (im.getpixel((j-1, i)) > 180 and j-1 >= 0) :
+        return recursion (j-1,i,columns,lines,im)
+    if(im.getpixel((j, i+1)) > 180 and i+1 < lines) :
+        return recursion (j,i+1,columns,lines,im)
+    if(im.getpixel((j, i-1)) >= 180 and i-1 >= 0) :
+        return recursion (j,i-1,columns,lines,im)
