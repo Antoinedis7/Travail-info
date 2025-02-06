@@ -1,0 +1,26 @@
+def recursion(j, i, columns, lines, im):
+    global recursion_count
+    if j-1 < 0 or j+1 > columns or i-1 < 0 or i+1 > lines:
+        im.putpixel((j,i),125)
+        print(f"At the limit: ({j}, {i})")
+        print(recursion_count)
+        return
+    
+    if im.getpixel((j,i)) < 180:  # Assuming the image background is white
+        print(f"Pixel already colored :({j}, {i})")
+        print(recursion_count)
+        return
+    im.putpixel((j,i),125)
+    if j + 1 <= columns and im.getpixel((j + 1, i)) >= 180:
+        recursion_count+=1
+        recursion(j + 1, i, columns, lines, im)
+    if j - 1 >= 0 and im.getpixel((j - 1, i)) >= 180:
+        recursion_count+=1
+        recursion(j - 1, i, columns, lines, im)
+    if i + 1 <= lines and im.getpixel((j, i + 1)) >= 180:
+        recursion_count+=1
+        recursion(j, i + 1, columns, lines, im)
+    if i - 1 >= 0 and im.getpixel((j, i - 1)) >= 180:
+        recursion_count+=1
+        recursion(j, i - 1, columns, lines, im)
+    return
