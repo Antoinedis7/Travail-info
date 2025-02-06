@@ -1,3 +1,6 @@
+def creation_tab(a,b):
+    
+
 def recursion(j, i, columns, lines, im):
     global recursion_count
     if j-1 < 0 or j+1 > columns or i-1 < 0 or i+1 > lines:
