@@ -41,6 +41,8 @@ def right_seed(coord,im):
         return coordinates
 
 def recursion(j,i,columns,lines,im):
+    a=j
+    b=i
     if (j+1 >= columns or im.getpixel((j+1, i)) < 180) and \
        (j-1 < 0 or im.getpixel((j-1, i)) < 180) and \
        (i+1 >= lines or im.getpixel((j, i+1)) < 180) and \
@@ -48,11 +50,15 @@ def recursion(j,i,columns,lines,im):
         im.putpixel(((j,i)),125)
         return
     im.putpixel(((j,i)),125)  # pixel coloration
+#colorie droite
     if (im.getpixel((j+1, i)) > 180 and j+1 < columns):
         return recursion (j+1,i,columns,lines,im)
+#colorie gauche
     if (im.getpixel((j-1, i)) > 180 and j-1 >= 0) :
         return recursion (j-1,i,columns,lines,im)
+#colorie bas
     if(im.getpixel((j, i+1)) > 180 and i+1 < lines) :
         return recursion (j,i+1,columns,lines,im)
+#colorie haut
     if(im.getpixel((j, i-1)) >= 180 and i-1 >= 0) :
         return recursion (j,i-1,columns,lines,im)
