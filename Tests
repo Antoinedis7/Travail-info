@@ -5,6 +5,7 @@ from PIL import Image
 import 1_simple as F
 
 
+
     ##création d'un tableau entièrement plein (le résultat attendu après l'execution de notre fonction remplir_table_vide)
 def creation_table_pleine(n):
 
@@ -19,7 +20,21 @@ def creation_table_pleine(n):
     return tablep
 
 
-    
+
+
+  ##Création d'un tableau vide.
+def creation_table_vide(): 
+    table=[[" " for j in range(10)]for i in range(10)]
+
+        ##On arrange son affichage pour qu'il soit esthétique.
+    for k in range(10):
+        print(table[k],end="\n")
+
+        ##On renvoie le tableau.
+    return table
+
+
+
 ##il suffit maintenant de vérifier si notre fonction remplie sa mission.
 assert F.remplir_table_vide(j,i,table) == tablep,"Même les miracles prennent un peu de temps..."
 
