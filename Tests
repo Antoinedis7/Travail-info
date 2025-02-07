@@ -10,6 +10,7 @@ def creation_table_vide(n):
         print(table[k],end="\n")
     return table
 
+
 ##création d'un tableau entièrement plein (le résultat attendu après l'execution de notre fonction remplir_table_vide)
 def creation_table_pleine(n):
 ## on crée donc un tableau par compréhension dont toutes la cases sont occupées par des "X"
