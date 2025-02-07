@@ -80,10 +80,14 @@ def ite(j,i,n):
         print("cette case n'existe pas, veuillez entrer d'autres coordonées la prochaine fois")
         return
     else:
-        emp=table[j][i]
-        recursion(j,i,table,emp)
-        for k in range(len(table)):
-            print(table[k],end="\n")
+        if table[j][i]=="X":
+            print("la case est déjà occupée")
+                return
+        else:
+            emp=table[j][i]
+            recursion(j,i,table,emp)
+            for k in range(len(table)):
+                print(table[k],end="\n")
     return
 
 
