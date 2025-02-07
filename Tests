@@ -7,20 +7,19 @@ import 1_simple as F
 
 
     ##création d'un tableau entièrement plein (le résultat attendu après l'execution de notre fonction remplir_table_vide)
-def creation_table_pleine(n):
+def creation_table_pleine():
 
     ## on crée donc un tableau par compréhension dont toutes la cases sont occupées par des "X"
-    tablep=[["X" for j in range(n)]for i in range(n)]
+    tablep=[["X" for j in range(10)]for i in range(10)]
 
     #on ajuste sa forme afin d'avoir un rendu esthétique et on l'affiche (ce qui n'est pas obligatoire car il a été créé dans le but de vérifier une condition et non de présenter un résultat à l'utilisateur).
-    for k in range(n):
+    for k in range(10):
         print(tablep[k],end="\n")
 
     #enfin on le renvoie
     return tablep
 
-
-
+tablep=creation_table_pleine()
 
   ##Création d'un tableau vide.
 def creation_table_vide(): 
@@ -33,10 +32,12 @@ def creation_table_vide():
         ##On renvoie le tableau.
     return table
 
+table=creation_table_vide()
 
 
 ##il suffit maintenant de vérifier si notre fonction remplie sa mission.
-assert F.remplir_table_vide(j,i,table) == tablep,"Même les miracles prennent un peu de temps..."
+assert (remplir_table_vide(6,4,table) == tablep,"Même les miracles prennent un peu de temps...")
+
 
 ## Etape 2
 
