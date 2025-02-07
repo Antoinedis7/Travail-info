@@ -1,13 +1,7 @@
         ##création d'un tableau vide
-def creation_table_vide(n): 
-    table=[[" " for j in range(n)]for i in range(n)]
-    for k in range(n):
-        print(table[k],end="\n")
-    return table
-
 
 #definition de la fonction de départ qui va être appelée pour lancer le programme. C'est une fonction itérative qui appelle une récursivité.
-def remplir_table_vide(j,i):
+def remplir_table_vide(j,i,table):
     table=creation_table_vide(10)
     if i<0 or i>len(table) or j<0 or j>len(table):
         print("cette case n'existe pas, veuillez entrer d'autres coordonées la prochaine fois")
