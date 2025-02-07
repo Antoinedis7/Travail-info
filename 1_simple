@@ -1,35 +1,64 @@
-        ##création d'un tableau vide
+        ##Création d'un tableau vide.
+def creation_table_vide(): 
+    table=[[" " for j in range(10)]for i in range(10)]
+        ##On arrange son affichage pour qu'il soit esthétique.
+    for k in range(10):
+        print(table[k],end="\n")
+        ##On renvoie le tableau.
+    return table
 
-#definition de la fonction de départ qui va être appelée pour lancer le programme. C'est une fonction itérative qui appelle une récursivité.
+
+
+
+
+        ##Definition de la fonction de départ qui va être appelée pour lancer le programme. C'est une fonction itérative qui appelle une récursivité.
 def remplir_table_vide(j,i,table):
-    table=creation_table_vide(10)
+        
+        ##On vérifie que les coordonnées de départ de la graine se trouve bien dans les limites du tableau.
     if i<0 or i>len(table) or j<0 or j>len(table):
         print("cette case n'existe pas, veuillez entrer d'autres coordonées la prochaine fois")
         return
+
     else:
+        ##On définie ce qu'est une case vide afin de pouvoir poser des conditions de remplissage selon le fait qu'une case soit vide ou non.
         emp=" "
+        ##On lance la récursivité
         recursion(j,i,table,emp)
+        ##On affiche puis renvoie le tableau final.
         for k in range(len(table)):
             print(table[k],end="\n")
     return
 
 
+
+        ##On crée notre fonction récursive qui va permettre de remplir non pas une seule case mais toutes les cases du tableau.
 def recursion(j, i, table,emp):
+        ##On pose nos cas de bases: si l'un des indices de la première case sors de la gamme des indices du tableau, la récursivité ne se fait pas pour cette case (elle n'éxiste pas).
     if (j-1 < 0 or j+1 > len(table)-1) and (i-1 < 0 or i+1 > len(table)-1):
+        ##Si la "prochaine case" n'existe pas alors on se contente de remplir celle occupée à ce moment là.
         table[j][i]="X"
         print(f"A la limite: ({j}, {i})")
         return
+
+        ##On vérifie que la case n'aie pas déjà été remplie. 
     if table[j][i] != emp:
+        ##Si c'est le cas, on ne la remplie pas de nouveau et on arrete la fonction.
         print ("la case est coloriée")
         return
+
+        ##Si aucun de nos cas de base n'est sollicité, alors on remplie la case actuelle et on étend la récursivité aux cases se situant:
     else:
         table[j][i]="X"
+        ##directement à droite, sur la meme ligne.
         if j + 1 < len(table) and table[j+1][i] == emp:
             recursion(j + 1, i, table, emp)
+        ##directement à gauche, sur le meme ligne.
         if j - 1 >= 0 and table[j-1][i] == emp:
             recursion(j - 1, i, table, emp)
+        ##directement au dessus, dans la meme colonne.
         if i + 1 < len(table) and table[j][i+1] == emp:
             recursion(j, i + 1, table, emp)
+        ##directement en dessous, sur la meme colonne.
         if i - 1 >= 0 and table[j][i-1] == emp:
             recursion(j, i - 1, table, emp)
         return
