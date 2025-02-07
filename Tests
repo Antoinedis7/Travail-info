@@ -17,7 +17,7 @@ def fonct_assert(j,i):
     table=remplir_table_vide(j,i)
     assert table==tablep,"Même les miracles prennent un peu de temps..."
     return
-#il suffit maintenant d'appeller notre fonction nouvellement créée et de choisir ses 
+#il suffit maintenant d'appeller notre fonction nouvellement créée et de choisir ses arguments.
 
 
 
