@@ -8,7 +8,7 @@ def creation_table_vide():
     return table
 
 
-##On crée notre table
+##On crée notre table et elle s'affiche grace à la fonction creation_table_vide.
 table=creation_table_vide()
 
 
