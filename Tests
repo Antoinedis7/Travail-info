@@ -36,7 +36,7 @@ table=creation_table_vide()
 
 
 ##il suffit maintenant de vérifier si notre fonction remplie sa mission.
-assert (remplir_table_vide(6,4,table) == tablep,"Même les miracles prennent un peu de temps...")
+assert (F.remplir_table_vide(6,4,table) == tablep,"Même les miracles prennent un peu de temps...")
 
 
 ## Etape 2
