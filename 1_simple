@@ -8,7 +8,8 @@ def creation_table_vide():
     return table
 
 
-
+##On crée notre table
+table=creation_table_vide()
 
 
         ##Definition de la fonction de départ qui va être appelée pour lancer le programme. C'est une fonction itérative qui appelle une récursivité.
