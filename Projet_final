@@ -1,3 +1,4 @@
+## BLASCO_DIS_HOUZE
 ## Etape 1
 
 
@@ -21,38 +22,69 @@ def coord_to_tuple(user_input: str) -> tuple:
 
 
 
-def right_seed(coord : tuple, im, col : tuple) -> tuple:
+def right_seed(coord : tuple, im, col : tuple, columns : int, lines : int) -> tuple:
     coordinates = coord
-    saved = im.getpixel(coordinates)  # Saves the color of the seed pixel.
-    
-    im.putpixel(coordinates, col)  # Colors the seed pixel in the wanted color.
+    saved = im.getpixel(coordinates)  # Saves the color of the seed pixel and those besides.
+    saved1 = im.getpixel((coordinates[0]+1,coordinates[1]+1))
+    saved2 = im.getpixel((coordinates[0]-1,coordinates[1]-1))
+    saved3 = im.getpixel((coordinates[0]+1,coordinates[1]-1))
+    saved4 = im.getpixel((coordinates[0]-1,coordinates[1]+1))
+
+    im.putpixel(coordinates, col)  # Colors the seed pixel in the wanted color and a cross around.
+    im.putpixel((coordinates[0]+1,coordinates[1]+1),col)
+    im.putpixel((coordinates[0]-1,coordinates[1]-1),col)
+    im.putpixel((coordinates[0]+1,coordinates[1]-1),col)
+    im.putpixel((coordinates[0]-1,coordinates[1]+1),col)
     im.show()
 
     validation = input("Are you happy with the seed position? Enter True or False: ")  # Asks the user if he is happy with the seed position.  
     assert validation == "False" or validation == "True", "Invalid input: Must be True or False. Please relaunch the program." 
     is_valid = validation == "True"
 
+    im.putpixel(coordinates,saved) # Restores the original color of the seed pixel and thoses besides.
+    im.putpixel((coordinates[0]+1,coordinates[1]+1),saved1)
+    im.putpixel((coordinates[0]-1,coordinates[1]-1),saved2)
+    im.putpixel((coordinates[0]+1,coordinates[1]-1),saved3)
+    im.putpixel((coordinates[0]-1,coordinates[1]+1),saved4)
 
     if is_valid:  # If the first seed is good, the function returns its coordinates.
-        im.putpixel(coordinates,saved)  # Restores the original color of the seed pixel.
         return coordinates
 
     else:
         while not is_valid:  # As long as the seed does not suit the user, the user can change its coordinates.
             coordinates = coord_to_tuple(input("Enter your new coordinates (e.g. -> x,y):"))
-            assert (len(coordinates) == 2 and\
-                   (type(coordinates[0]) == int and type(coordinates[1]) == int) and\
-                   (coordinates[0] >= 0 and coordinates[0] <= ncolumns and coordinates[1] >= 0 and coordinates[1] <= nlines)
-                   ),"Invalid input: Must be two integers within image boundaries. Please relaunch the program." 
-            im.putpixel(coordinates, (110))
+            assert (len(coordinates) == 2 and
+                   (type(coordinates[0]) == int and type(coordinates[1]) == int) and
+                   (coordinates[0] >= 0 and coordinates[0] <= columns and coordinates[1] >= 0 and coordinates[1] <= lines)
+                   ),"Invalid input: Must be two integers within image boundaries. Please relaunch the program."
+            
+            saved = im.getpixel(coordinates)  # Saves the color of the seed pixel and those besides.
+            saved1 = im.getpixel((coordinates[0]+1,coordinates[1]+1))
+            saved2 = im.getpixel((coordinates[0]-1,coordinates[1]-1))
+            saved3 = im.getpixel((coordinates[0]+1,coordinates[1]-1))
+            saved4 = im.getpixel((coordinates[0]-1,coordinates[1]+1))
+            
+            im.putpixel(coordinates, col)
+            im.putpixel((coordinates[0]+1,coordinates[1]+1),col)
+            im.putpixel((coordinates[0]-1,coordinates[1]-1),col)
+            im.putpixel((coordinates[0]+1,coordinates[1]-1),col)
+            im.putpixel((coordinates[0]-1,coordinates[1]+1),col)
             im.show()
             
             validation = input("Are you happy with the seed position? Enter True or False: ")
             assert validation == "False" or validation == "True", "Invalid input: Must be True or False. Please relaunch the program."
             is_valid = validation == "True"
 
-            im.putpixel(coordinates,saved) # Restores the original color of the seed pixel.
+            im.putpixel(coordinates,saved) # Restores the original color of the seed pixel and thoses besides.
+            im.putpixel((coordinates[0]+1,coordinates[1]+1),saved1)
+            im.putpixel((coordinates[0]-1,coordinates[1]-1),saved2)
+            im.putpixel((coordinates[0]+1,coordinates[1]-1),saved3)
+            im.putpixel((coordinates[0]-1,coordinates[1]+1),saved4)
         im.putpixel(coordinates,saved)
+        im.putpixel((coordinates[0]+1,coordinates[1]+1),saved1)
+        im.putpixel((coordinates[0]-1,coordinates[1]-1),saved2)
+        im.putpixel((coordinates[0]+1,coordinates[1]-1),saved3)
+        im.putpixel((coordinates[0]-1,coordinates[1]+1),saved4)
         return coordinates
 
 
@@ -135,7 +167,7 @@ def color_image_RGB(name_image):
            (firstcoord[0] >= 0 and firstcoord[0] <= ncolumns and firstcoord[1] >= 0 and firstcoord[1] <= nlines)
             ),"Invalid input: Must be two integers within image boundaries. Please relaunch the program."
     
-    final_coordinates = right_seed(firstcoord, image, color)  # right_seed returns the tuple of final coordinates of the seed.
+    final_coordinates = right_seed(firstcoord, image, color, ncolumns, nlines)  # right_seed returns the tuple of final coordinates of the seed.
 
     ifinal = final_coordinates[1]  # line index of the seed pixel.
     jfinal = final_coordinates[0]  # column index of the seed pixel.
@@ -182,7 +214,7 @@ def color_image_grey_scale(name_image):
            (type(firstcoord[0]) == int and type(firstcoord[1]) == int) and
            (firstcoord[0] >= 0 and firstcoord[0] <= ncolumns and firstcoord[1] >= 0 and firstcoord[1] <= nlines)
            ),"Invalid input: Must be two integers within image boundaries. Please relaunch the program."    
-    final_coordinates = right_seed(firstcoord, image, color)  # right_seed returns the tuple of final coordinates of the seed.
+    final_coordinates = right_seed(firstcoord, image, color, ncolumns, nlines)  # right_seed returns the tuple of final coordinates of the seed.
 
     ifinal = final_coordinates[1]  # line index of the seed pixel.
     jfinal = final_coordinates[0]  # column index of the seed pixel.
@@ -213,19 +245,32 @@ def coord_to_tuple2(user_input: str) -> tuple:
 
 
 
-def right_seed2(coord : tuple, im, col : tuple) -> tuple:
+def right_seed2(coord : tuple, im, col : tuple, columns : int, lines : int) -> tuple:
     coordinates = coord
-    saved = im.getpixel(coordinates)  # Sauvegarde la couleur du pixel de la graine.
+    saved = im.getpixel(coordinates)  # Sauvegarde la couleur du pixel de la graine et de ceux alentours.
+    saved1 = im.getpixel((coordinates[0]+1,coordinates[1]+1))
+    saved2 = im.getpixel((coordinates[0]-1,coordinates[1]-1))
+    saved3 = im.getpixel((coordinates[0]+1,coordinates[1]-1))
+    saved4 = im.getpixel((coordinates[0]-1,coordinates[1]+1))
     
-    im.putpixel(coordinates, col)  # Colore le pixel de la graine dans la couleur souhaitée.
+    im.putpixel(coordinates, col)  # Colore le pixel de la graine dans la couleur souhaitée et la croix autour.
+    im.putpixel((coordinates[0]+1,coordinates[1]+1),col)
+    im.putpixel((coordinates[0]-1,coordinates[1]-1),col)
+    im.putpixel((coordinates[0]+1,coordinates[1]-1),col)
+    im.putpixel((coordinates[0]-1,coordinates[1]+1),col)
     im.show()
 
     validation = input("Êtes-vous satisfait de la position de la graine ? Entrez Vrai ou Faux : ")  # Demande à l'utilisateur s'il est satisfait de la position de la graine.
     assert validation == "Faux" or validation == "Vrai", "Entrée invalide : Doit être Vrai ou Faux. Veuillez relancer le programme."
     is_valid = validation == "Vrai"
 
+    im.putpixel(coordinates,saved)  # Restaure la couleur d'origine du pixel de la graine et de ceux alentours.
+    im.putpixel((coordinates[0]+1,coordinates[1]+1),saved1)
+    im.putpixel((coordinates[0]-1,coordinates[1]-1),saved2)
+    im.putpixel((coordinates[0]+1,coordinates[1]-1),saved3)
+    im.putpixel((coordinates[0]-1,coordinates[1]+1),saved4)
+
     if is_valid:  # Si la première graine est bonne, la fonction renvoie ses coordonnées.
-        im.putpixel(coordinates,saved)  # Restaure la couleur d'origine du pixel de la graine.
         return coordinates
 
     else:
@@ -233,17 +278,36 @@ def right_seed2(coord : tuple, im, col : tuple) -> tuple:
             coordinates = coord_to_tuple2(input("Entrez vos nouvelles coordonnées (par exemple -> x,y) :"))
             assert (len(coordinates) == 2 and\
                    (type(coordinates[0]) == int and type(coordinates[1]) == int) and\
-                   (coordinates[0] >= 0 and coordinates[0] <= ncolumns and coordinates[1] >= 0 and coordinates[1] <= nlines)
+                   (coordinates[0] >= 0 and coordinates[0] <= columns and coordinates[1] >= 0 and coordinates[1] <= lines)
                    ),"Entrée invalide : Doit être deux entiers dans les limites de l'image. Veuillez relancer le programme."
-            im.putpixel(coordinates, (110))
+
+            saved = im.getpixel(coordinates)  # Sauvegarde la couleur du pixel de la graine et de ceux alentours.
+            saved1 = im.getpixel((coordinates[0]+1,coordinates[1]+1))
+            saved2 = im.getpixel((coordinates[0]-1,coordinates[1]-1))
+            saved3 = im.getpixel((coordinates[0]+1,coordinates[1]-1))
+            saved4 = im.getpixel((coordinates[0]-1,coordinates[1]+1))
+    
+            im.putpixel(coordinates, col)
+            im.putpixel((coordinates[0]+1,coordinates[1]+1),col)
+            im.putpixel((coordinates[0]-1,coordinates[1]-1),col)
+            im.putpixel((coordinates[0]+1,coordinates[1]-1),col)
+            im.putpixel((coordinates[0]-1,coordinates[1]+1),col)
             im.show()
             
             validation = input("Êtes-vous satisfait de la position de la graine ? Entrez Vrai ou Faux : ")
             assert validation == "Faux" or validation == "Vrai", "Entrée invalide : Doit être Vrai ou Faux. Veuillez relancer le programme."
             is_valid = validation == "Vrai"
 
-            im.putpixel(coordinates,saved) # Restaure la couleur d'origine du pixel de la graine.
+            im.putpixel(coordinates,saved) # Restaure la couleur d'origine du pixel de la graine et de ceux alentours.
+            im.putpixel((coordinates[0]+1,coordinates[1]+1),saved1)
+            im.putpixel((coordinates[0]-1,coordinates[1]-1),saved2)
+            im.putpixel((coordinates[0]+1,coordinates[1]-1),saved3)
+            im.putpixel((coordinates[0]-1,coordinates[1]+1),saved4)
         im.putpixel(coordinates,saved)
+        im.putpixel((coordinates[0]+1,coordinates[1]+1),saved1)
+        im.putpixel((coordinates[0]-1,coordinates[1]-1),saved2)
+        im.putpixel((coordinates[0]+1,coordinates[1]-1),saved3)
+        im.putpixel((coordinates[0]-1,coordinates[1]+1),saved4)
         return coordinates
 
 
@@ -326,7 +390,7 @@ def colorier_image_RGB(name_image):
            (firstcoord[0] >= 0 and firstcoord[0] <= ncolumns and firstcoord[1] >= 0 and firstcoord[1] <= nlines)
             ),"Entrée invalide : Doit être deux entiers dans les limites de l'image. Veuillez relancer le programme."
     
-    final_coordinates = right_seed2(firstcoord, image, color)  # right_seed renvoie le tuple des coordonnées finales de la graine.
+    final_coordinates = right_seed2(firstcoord, image, color, ncolumns, nlines)  # right_seed renvoie le tuple des coordonnées finales de la graine.
 
     ifinal = final_coordinates[1]  # index de ligne du pixel de la graine.
     jfinal = final_coordinates[0]  # index de colonne du pixel de la graine.
@@ -373,7 +437,7 @@ def colorier_image_echelle_gris(name_image):
            (type(firstcoord[0]) == int and type(firstcoord[1]) == int) and
            (firstcoord[0] >= 0 and firstcoord[0] <= ncolumns and firstcoord[1] >= 0 and firstcoord[1] <= nlines)
            ),"Entrée invalide : Doit être deux entiers dans les limites de l'image. Veuillez relancer le programme."    
-    final_coordinates = right_seed2(firstcoord, image, color)  # right_seed renvoie le tuple des coordonnées finales de la graine.
+    final_coordinates = right_seed2(firstcoord, image, color, ncolumns, nlines)  # right_seed renvoie le tuple des coordonnées finales de la graine.
 
     ifinal = final_coordinates[1]  # index de ligne du pixel de la graine.
     jfinal = final_coordinates[0]  # index de colonne du pixel de la graine.
