@@ -1,15 +1,1 @@
-from 1 simple import remplir_table_vide(j,i)
-#création d'un tableau entièrement plein
-def creation_table_pleine(n):
-    tablep=[["X" for j in range(n)]for i in range(n)]
-    for k in range(n):
-        print(tablep[k],end="\n")
-    return tablep
 
-def fonct_assert(j,i):
-    tablep=creation_table_pleine(10)
-    table=remplir_table_vide(j,i)
-    assert(table==tablep,"Même les miracles prennent un peu de temps...")
-    return
-    
-fonct_assert(9,7)
