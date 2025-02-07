@@ -1,4 +1,5 @@
-# Etape 1
+#"C:\Users\33768\OneDrive\Bureau\CPES\INFO\Projet\INFO_Projet_1_BLASCO_DIS_HOUZE\Essais_BLASCO_DIS_HOUZE\Exemples_RGB_BLASCO_DIS_HOUZE\GIF_minion_coloration.gif"
+
 import Programme_BLASCO_DIS_HOUZE as prog
 from PIL import Image
 ## Etape 1
@@ -30,8 +31,8 @@ from PIL import Image
 # Avec la fonction colorier_image_echelle_gris() :
 #   assert color >= 0 and color <= 255, "Entrée invalide : Doit être un seul entier entre 0 et 255. Veuillez relancer le programme."
 
-#   assert (len(coordinates) == 2 and\
-#       (type(coordinates[0]) == int and type(coordinates[1]) == int) and\
+#   assert (len(coordinates) == 2 and
+#       (type(coordinates[0]) == int and type(coordinates[1]) == int) and
 #       (coordinates[0] >= 0 and coordinates[0] <= ncolumns and coordinates[1] >= 0 and coordinates[1] <= nlines)
 #       ),"Entrée invalide : Doit être deux entiers dans les limites de l'image. Veuillez relancer le programme."
 
@@ -40,12 +41,7 @@ from PIL import Image
 
 #(2)
 # Avec fonction colorier_image_RGB() :
-img = Image.open("Essais_BLASCO_DIS_HOUZE/Exemples_RGB_BLASCO_DIS_HOUZE/GIF_minion_coloration.gif")
-img.show()
+# -> INFO_Projet_1_BLASCO_DIS_HOUZE\Essais_BLASCO_DIS_HOUZE\Exemples_RGB_BLASCO_DIS_HOUZE\GIF_minion_coloration.gif
 
 # Avec la fonction colorier_image_echelle_gris() :
-img1 = Image.open("Essais_BLASCO_DIS_HOUZE/Exemples_grey_scale_BLASCO_DIS_HOUZE/minion_L_colorized (1).jpg")
-img1.show()
-
-
-# Etape 2
+# -> INFO_Projet_1_BLASCO_DIS_HOUZE\Essais_BLASCO_DIS_HOUZE\Exemples_grey_scale_BLASCO_DIS_HOUZE\minion_L_colorized (1).jpg
