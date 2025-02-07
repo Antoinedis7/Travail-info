@@ -1,0 +1,56 @@
+
+
+##on commence par créer des tables que nous pourrons utiliser pour les asserts dans différents cas de figures
+
+##création d'un tableau vide
+def creation_table_vide(n): 
+    table=[[" " for j in range(n)]for i in range(n)]
+    for k in range(n):
+        print(table[k],end="\n")
+    return table
+
+
+#definition de la fonction de départ qui va être appelée pour lancer le programme. C'est une fonction itérative qui appelle une récursivité.
+def ite(j,i):
+    table=creation_table_vide(10)
+    if i<0 or i>len(table) or j<0 or j>len(table):
+        print("cette case n'existe pas, veuillez entrer d'autres coordonées la prochaine fois")
+        return
+    else:
+        emp=" "
+        recursion(j,i,table,emp)
+        for k in range(len(table)):
+            print(table[k],end="\n")
+    return
+
+
+def recursion(j, i, table,emp):
+    if j-1 < 0 or j+1 > len(table) or i-1 < 0 or i+1 > len(table):
+        table[j][i]="X"
+        print(f"A la limite: ({j}, {i})")
+        return
+    if table[j][i] != emp:
+        print ("la case est coloriée")
+        return
+    else:
+        table[j][i]="X"
+        if j + 1 < len(table) and table[j+1][i] == emp:
+            recursion(j + 1, i, table, emp)
+        if j - 1 >= 0 and table[j-1][i] == emp:
+            recursion(j - 1, i, table, emp)
+        if i + 1 < len(table) and table[j][i+1] == emp:
+            recursion(j, i + 1, table, emp)
+        if i - 1 >= 0 and table[j][i-1] == emp:
+            recursion(j, i - 1, table, emp)
+        return
+
+
+#création d'un tableau entièrement pleine
+def creation_table_pleine(n):
+    tablep=[["X" for j in range(n)]for i in range(n)]
+    for k in range(n):
+        print(tablep[k],end="\n")
+    return tablep
+    
+    
+print(ite(2,6))
