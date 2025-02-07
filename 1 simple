@@ -47,8 +47,5 @@ def creation_table_pleine(n):
     for k in range(n):
         print(tablep[k],end="\n")
     return tablep
-    
-    
-print(ite(8,8))
 
 
