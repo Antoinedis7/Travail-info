@@ -1,5 +1,51 @@
 # Etape 1
+import Programme_BLASCO_DIS_HOUZE as prog
+from PIL import Image
+## Etape 1
 
+
+
+
+## Etape 2
+
+# Pour tester la fonction colorier_image_RGB() ou colorier_image_echelle_gris() c'est compliquer d'effectuer un assert
+# car une image est difficilement comparable à une autre et il y a trop de cas différents pour que des assert soient
+# pertinents. Par contre nous pouvons mettre ici les différents assert que nous avons utilisées au sein des différentes 
+# fonctions dans "Programme_BLASCO_DIS_HOUZE.py"(1). 
+# 
+# Nous proposons aussi de montrer des exemples d'images obtenues avec 
+# les fonctions colorier_image_RGB() et colorier_image_echelle_gris() que nous avons stockées dans le dossier
+# "Essais_BLASCO_DIS_HOUZE"(2).
+
+# (1)
+#   assert image.format == "JPEG", "Argument invalide : Doit être une image au format JPEG. Veuillez relancer le programme."
+
+# Avec fonction colorier_image_RGB() :
+#   assert (type(color) == tuple and len(color) == 3 and
+#       type(color[0]) == int and type(color[1]) == int and type(color[2]) == int and
+#       color[0] >= 0 and color[0] <= 255 and color[1] >= 0 and color[1] <= 255 and
+#       color[2] >= 0 and color[2] <= 255
+#       ),"Entrée invalide : Doit être trois entiers -R, G, B- chacun entre 0 et 255. Veuillez relancer le programme."
+
+# Avec la fonction colorier_image_echelle_gris() :
+#   assert color >= 0 and color <= 255, "Entrée invalide : Doit être un seul entier entre 0 et 255. Veuillez relancer le programme."
+
+#   assert (len(coordinates) == 2 and\
+#       (type(coordinates[0]) == int and type(coordinates[1]) == int) and\
+#       (coordinates[0] >= 0 and coordinates[0] <= ncolumns and coordinates[1] >= 0 and coordinates[1] <= nlines)
+#       ),"Entrée invalide : Doit être deux entiers dans les limites de l'image. Veuillez relancer le programme."
+
+#   assert validation == "Faux" or validation == "Vrai", "Entrée invalide : Doit être Vrai ou Faux. Veuillez relancer le programme."
+
+
+#(2)
+# Avec fonction colorier_image_RGB() :
+img = Image.open("Essais_BLASCO_DIS_HOUZE/Exemples_RGB_BLASCO_DIS_HOUZE/GIF_minion_coloration.gif")
+img.show()
+
+# Avec la fonction colorier_image_echelle_gris() :
+img1 = Image.open("Essais_BLASCO_DIS_HOUZE/Exemples_grey_scale_BLASCO_DIS_HOUZE/minion_L_colorized (1).jpg")
+img1.show()
 
 
 # Etape 2
