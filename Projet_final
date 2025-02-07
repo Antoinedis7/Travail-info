@@ -1,0 +1,385 @@
+## Etape 1
+
+
+
+###################################################################################################################################################################
+###################################################################################################################################################################
+
+
+
+## Etape 2 en anglais
+from PIL import Image
+import os
+
+def coord_to_tuple(user_input: str) -> tuple:
+    tab = user_input.split(",")
+    if len(tab) == 3:  # Transforms the RGB data into a tuple.
+        tup=(int(tab[0]),int(tab[1]),int(tab[2]))
+    if len(tab) == 2:  # Transforms the x,y coordinates of the seed intp a tuple.
+        tup = (int(tab[0]), int(tab[1]))
+    return tup
+
+
+
+def right_seed(coord : tuple, im, col : tuple) -> tuple:
+    coordinates = coord
+    saved = im.getpixel(coordinates)  # Saves the color of the seed pixel.
+    
+    im.putpixel(coordinates, col)  # Colors the seed pixel in the wanted color.
+    im.show()
+
+    validation = input("Are you happy with the seed position? Enter True or False: ")  # Asks the user if he is happy with the seed position.  
+    assert validation == "False" or validation == "True", "Invalid input: Must be True or False. Please relaunch the program." 
+    is_valid = validation == "True"
+
+
+    if is_valid:  # If the first seed is good, the function returns its coordinates.
+        im.putpixel(coordinates,saved)  # Restores the original color of the seed pixel.
+        return coordinates
+
+    else:
+        while not is_valid:  # As long as the seed does not suit the user, the user can change its coordinates.
+            coordinates = coord_to_tuple(input("Enter your new coordinates (e.g. -> x,y):"))
+            assert (len(coordinates) == 2 and\
+                   (type(coordinates[0]) == int and type(coordinates[1]) == int) and\
+                   (coordinates[0] >= 0 and coordinates[0] <= ncolumns and coordinates[1] >= 0 and coordinates[1] <= nlines)
+                   ),"Invalid input: Must be two integers within image boundaries. Please relaunch the program." 
+            im.putpixel(coordinates, (110))
+            im.show()
+            
+            validation = input("Are you happy with the seed position? Enter True or False: ")
+            assert validation == "False" or validation == "True", "Invalid input: Must be True or False. Please relaunch the program."
+            is_valid = validation == "True"
+
+            im.putpixel(coordinates,saved) # Restores the original color of the seed pixel.
+        im.putpixel(coordinates,saved)
+        return coordinates
+
+
+
+def recursion(j, i, columns, lines, im, col):
+    if j-1 < 0 or j+1 > columns or i-1 < 0 or i+1 > lines:  # If the pixel is at the limit of the image, the function stops.
+        im.putpixel((j,i),col)  # Colors the pixel.
+        return
+
+    if im.mode == "L":  
+        limit_col = 180  # Sets the threshold from which it can colorize a pixel depending on the mode of the image.
+        if im.getpixel((j,i)) <= 15 :  # If the pixel is already colored in black -which means it is the line- the function stops.
+            return
+
+    if im.mode == "RGB":  # Sets the threshold from which it can colorize a pixel depending on the mode of the image.
+        limit_col = (180,180,180)    
+        if im.getpixel((j,i))[0] >= 0 and im.getpixel((j,i))[1] >= 0 and im.getpixel((j,i))[2] >= 0 and\
+           im.getpixel((j,i))[0] <= 15 and im.getpixel((j,i))[1] <= 15 and\
+           im.getpixel((j,i))[2] <= 15:  # If the pixel is already colored in black -which means it is the line- the function stops.
+            return
+
+    if im.getpixel((j,i)) == col:
+        return
+    
+    im.putpixel((j,i),col)  # Colors the pixel.
+
+    if j + 1 <= columns and im.getpixel((j + 1, i)) >= limit_col: # If the pixel on the right is white it colors it.
+        recursion(j + 1, i, columns, lines, im, col)
+    if j - 1 >= 0 and im.getpixel((j - 1, i)) >= limit_col:  # If the pixel on the left is white it colors it.
+        recursion(j - 1, i, columns, lines, im, col)
+    if i + 1 <= lines and im.getpixel((j, i + 1)) >= limit_col:  # If the pixel below is white it colors it.
+        recursion(j, i + 1, columns, lines, im, col)
+    if i - 1 >= 0 and im.getpixel((j, i - 1)) >= limit_col:  # If the pixel above is white it colors it.
+        recursion(j, i - 1, columns, lines, im, col)
+    return
+
+
+
+def color_image_RGB(name_image):
+    """color_image_RGB allows the user to colorize an image with RGB values.
+
+        Steps of the program :
+        1) You enter the name of a jpeg image.
+        2) The program will ask you to enter a RGB value corresponding to
+        the color you want to use.
+        3) It will then ask you for the coordinates of the seed pixel.
+        You will have the choice to validate or not the position of the seed and retry.
+        
+        RGB codes to color the minion :
+        - not too intense black : (60,60,60)
+        - grey : (192,192,192)
+        - blue : (96,144,208)
+        - dark blue : (0,0,139)
+        - brown : (139,69,19)
+        - yellow : (255,223,0)
+    """
+    import sys
+    sys.setrecursionlimit(5000)  # Sets the limit of recursions to 5000.
+    image = Image.open(name_image)
+
+    assert image.format == "JPEG", "Invalid argument: Must be an image in JPEG format. Please relaunch the program."
+     
+    if image.mode != "RGB":
+        image = image.convert("RGB")  # Conversion of the image to a RGB format.
+
+    size = image.size
+    nlines = size[1]  # nlines = height of the image/number of lines of pixels.
+    ncolumns = size[0]  # ncolumns = width of the image/number of columns of pixels.
+
+    color = coord_to_tuple(input("Enter the RGB values -between 0 and 255- of the color you want to use (e.g. -> 50,70,90):"))  # User writes the desired color.
+    assert (type(color) == tuple and len(color) == 3 and
+           (type(color[0]) == int and type(color[1]) == int and type(color[2]) == int) and
+           (color[0] >= 0 and color[0] <= 255 and color[1] >= 0 and color[1] <= 255 and
+            color[2] >= 0 and color[2] <= 255)
+            ),"Invalid input: Must be three integers -R, G, B- each between 0 and 255. Please relaunch the program."
+
+    firstcoord = coord_to_tuple(input(f"Enter coordinates for coloration between {size} (e.g. -> x,y):"))  # User writes the first desired coordinates for the seed.
+    assert (len(firstcoord) == 2 and
+           (type(firstcoord[0]) == int and type(firstcoord[1]) == int) and
+           (firstcoord[0] >= 0 and firstcoord[0] <= ncolumns and firstcoord[1] >= 0 and firstcoord[1] <= nlines)
+            ),"Invalid input: Must be two integers within image boundaries. Please relaunch the program."
+    
+    final_coordinates = right_seed(firstcoord, image, color)  # right_seed returns the tuple of final coordinates of the seed.
+
+    ifinal = final_coordinates[1]  # line index of the seed pixel.
+    jfinal = final_coordinates[0]  # column index of the seed pixel.
+
+    recursion(jfinal, ifinal, ncolumns, nlines, image, color)  # recursion colors the image starting from the pixel seed.
+    image.show()
+    image.save(f"{name_image[:-4]}_RGB_colorized.jpg", "JPEG")
+    return
+
+
+
+def color_image_grey_scale(name_image):
+    """color_image_grey_scale allows the user to colorize an image with L values / a grey scale.
+
+        Steps of the program :
+        1) You enter the name of a jpeg image.
+        2) The program will ask you to enter a grey value corresponding
+        to the grey intensity you want to use.
+        3) It will then ask you for the coordinates of the seed pixel.
+        You will have the choice to validate or not the position of the seed and retry.
+        
+        L / grey scale codes to color the minion :
+        - black : 0
+        - white : 255
+    """
+    import sys
+    sys.setrecursionlimit(5000)  # Sets the limit of recursions to 5000.
+    image = Image.open(name_image)
+    
+    assert image.format == "JPEG", "Invalid argument: Must be an image in JPEG format. Please relaunch the program."
+
+    if image.mode != "L":
+        image.convert("L")  # Conversion of the image to a L format (scale of grey).
+
+    size = image.size
+    nlines = size[1]  # nlines = height of the image/number of lines of pixels.
+    ncolumns = size[0]  # ncolumns = width of the image/number of columns of pixels.
+
+    color = int(input("Enter the grey value -between 0 and 255- of the scale of grey you want to use (e.g. -> 100):"))  # User writes the desired color.
+    assert color >= 0 and color <= 255, "Invalid input: Must be a single integer between 0 and 255. Please relaunch the program."
+    
+    firstcoord = coord_to_tuple(input(f"Enter coordinates for coloration between {size} (e.g. -> x,y):"))  # User writes the first desired coordinates for the seed.
+    assert (len(firstcoord) == 2 and
+           (type(firstcoord[0]) == int and type(firstcoord[1]) == int) and
+           (firstcoord[0] >= 0 and firstcoord[0] <= ncolumns and firstcoord[1] >= 0 and firstcoord[1] <= nlines)
+           ),"Invalid input: Must be two integers within image boundaries. Please relaunch the program."    
+    final_coordinates = right_seed(firstcoord, image, color)  # right_seed returns the tuple of final coordinates of the seed.
+
+    ifinal = final_coordinates[1]  # line index of the seed pixel.
+    jfinal = final_coordinates[0]  # column index of the seed pixel.
+
+    recursion(jfinal, ifinal, ncolumns, nlines, image, color)  # recursion colors the image starting from the pixel seed.
+    image.show()
+    image.save(f"{name_image[:-4]}_L_colorized.jpg", "JPEG")
+    return
+
+
+
+####################################################################################################################################################################
+####################################################################################################################################################################
+
+
+
+## Etape 2 en français
+from PIL import Image
+import os
+
+def coord_to_tuple2(user_input: str) -> tuple:
+    tab = user_input.split(",")
+    if len(tab) == 3:  # Transforme les données RGB en un tuple.
+        tup=(int(tab[0]),int(tab[1]),int(tab[2]))
+    if len(tab) == 2:  # Transforme les coordonnées x,y de la graine en un tuple.
+        tup = (int(tab[0]), int(tab[1]))
+    return tup
+
+
+
+def right_seed2(coord : tuple, im, col : tuple) -> tuple:
+    coordinates = coord
+    saved = im.getpixel(coordinates)  # Sauvegarde la couleur du pixel de la graine.
+    
+    im.putpixel(coordinates, col)  # Colore le pixel de la graine dans la couleur souhaitée.
+    im.show()
+
+    validation = input("Êtes-vous satisfait de la position de la graine ? Entrez Vrai ou Faux : ")  # Demande à l'utilisateur s'il est satisfait de la position de la graine.
+    assert validation == "Faux" or validation == "Vrai", "Entrée invalide : Doit être Vrai ou Faux. Veuillez relancer le programme."
+    is_valid = validation == "Vrai"
+
+    if is_valid:  # Si la première graine est bonne, la fonction renvoie ses coordonnées.
+        im.putpixel(coordinates,saved)  # Restaure la couleur d'origine du pixel de la graine.
+        return coordinates
+
+    else:
+        while not is_valid:  # Tant que la graine ne convient pas à l'utilisateur, celui-ci peut changer ses coordonnées.
+            coordinates = coord_to_tuple2(input("Entrez vos nouvelles coordonnées (par exemple -> x,y) :"))
+            assert (len(coordinates) == 2 and\
+                   (type(coordinates[0]) == int and type(coordinates[1]) == int) and\
+                   (coordinates[0] >= 0 and coordinates[0] <= ncolumns and coordinates[1] >= 0 and coordinates[1] <= nlines)
+                   ),"Entrée invalide : Doit être deux entiers dans les limites de l'image. Veuillez relancer le programme."
+            im.putpixel(coordinates, (110))
+            im.show()
+            
+            validation = input("Êtes-vous satisfait de la position de la graine ? Entrez Vrai ou Faux : ")
+            assert validation == "Faux" or validation == "Vrai", "Entrée invalide : Doit être Vrai ou Faux. Veuillez relancer le programme."
+            is_valid = validation == "Vrai"
+
+            im.putpixel(coordinates,saved) # Restaure la couleur d'origine du pixel de la graine.
+        im.putpixel(coordinates,saved)
+        return coordinates
+
+
+
+def recursion2(j, i, columns, lines, im, col):
+    if j-1 < 0 or j+1 > columns or i-1 < 0 or i+1 > lines:  # Si le pixel est à la limite de l'image, la fonction s'arrête.
+        im.putpixel((j,i),col)  # Colore le pixel.
+        return
+
+    if im.mode == "L":  
+        limit_col = 180  # Définit le seuil à partir duquel il peut colorier un pixel en fonction du mode de l'image.
+        if im.getpixel((j,i)) <= 15 :  # Si le pixel est déjà coloré en noir -ce qui signifie que c'est la ligne- la fonction s'arrête.
+            return
+
+    if im.mode == "RGB":  # Définit le seuil à partir duquel il peut colorier un pixel en fonction du mode de l'image.
+        limit_col = (180,180,180)    
+        if im.getpixel((j,i))[0] >= 0 and im.getpixel((j,i))[1] >= 0 and im.getpixel((j,i))[2] >= 0 and\
+           im.getpixel((j,i))[0] <= 15 and im.getpixel((j,i))[1] <= 15 and\
+           im.getpixel((j,i))[2] <= 15:  # Si le pixel est déjà coloré en noir -ce qui signifie que c'est la ligne- la fonction s'arrête.
+            return
+
+    if im.getpixel((j,i)) == col:
+        return
+    
+    im.putpixel((j,i),col)  # Colore le pixel.
+
+    if j + 1 <= columns and im.getpixel((j + 1, i)) >= limit_col: # Si le pixel à droite est blanc, il le colore.
+        recursion2(j + 1, i, columns, lines, im, col)
+    if j - 1 >= 0 and im.getpixel((j - 1, i)) >= limit_col:  # Si le pixel à gauche est blanc, il le colore.
+        recursion2(j - 1, i, columns, lines, im, col)
+    if i + 1 <= lines and im.getpixel((j, i + 1)) >= limit_col:  # Si le pixel en bas est blanc, il le colore.
+        recursion2(j, i + 1, columns, lines, im, col)
+    if i - 1 >= 0 and im.getpixel((j, i - 1)) >= limit_col:  # Si le pixel en haut est blanc, il le colore.
+        recursion2(j, i - 1, columns, lines, im, col)
+    return
+
+
+
+def colorier_image_RGB(name_image):
+    """color_image_RGB permet à l'utilisateur de colorier une image avec des valeurs RGB.
+
+        Étapes du programme :
+        1) Vous entrez le nom d'une image jpeg.
+        2) Le programme vous demandera d'entrer une valeur RGB correspondant à
+        la couleur que vous souhaitez utiliser.
+        3) Il vous demandera ensuite les coordonnées du pixel de la graine.
+        Vous aurez le choix de valider ou non la position de la graine et de réessayer.
+        
+        Codes RGB pour colorier le minion :
+        - noir pas trop intense : (60,60,60)
+        - gris : (192,192,192)
+        - bleu : (96,144,208)
+        - bleu foncé : (0,0,139)
+        - marron : (139,69,19)
+        - jaune : (255,223,0)
+    """
+    import sys
+    sys.setrecursionlimit(5000)  # Définit la limite de récursions à 5000.
+    image = Image.open(name_image)
+
+    assert image.format == "JPEG", "Argument invalide : Doit être une image au format JPEG. Veuillez relancer le programme."
+     
+    if image.mode != "RGB":
+        image = image.convert("RGB")  # Conversion de l'image au format RGB
+
+    size = image.size
+    nlines = size[1]  # nlines = hauteur de l'image/nombre de lignes de pixels.
+    ncolumns = size[0]  # ncolumns = largeur de l'image/nombre de colonnes de pixels.
+
+    color = coord_to_tuple2(input("Entrez les valeurs RGB -entre 0 et 255- de la couleur que vous souhaitez utiliser (par exemple -> 50,70,90) :"))  # L'utilisateur écrit la couleur souhaitée.
+    assert (type(color) == tuple and len(color) == 3 and
+            type(color[0]) == int and type(color[1]) == int and type(color[2]) == int and
+            color[0] >= 0 and color[0] <= 255 and color[1] >= 0 and color[1] <= 255 and
+            color[2] >= 0 and color[2] <= 255
+            ),"Entrée invalide : Doit être trois entiers -R, G, B- chacun entre 0 et 255. Veuillez relancer le programme."
+
+    firstcoord = coord_to_tuple2(input(f"Entrez les coordonnées pour la coloration entre {size} (par exemple -> x,y) :"))  # L'utilisateur écrit les premières coordonnées souhaitées pour la graine.
+    assert (len(firstcoord) == 2 and
+           (type(firstcoord[0]) == int and type(firstcoord[1]) == int) and
+           (firstcoord[0] >= 0 and firstcoord[0] <= ncolumns and firstcoord[1] >= 0 and firstcoord[1] <= nlines)
+            ),"Entrée invalide : Doit être deux entiers dans les limites de l'image. Veuillez relancer le programme."
+    
+    final_coordinates = right_seed2(firstcoord, image, color)  # right_seed renvoie le tuple des coordonnées finales de la graine.
+
+    ifinal = final_coordinates[1]  # index de ligne du pixel de la graine.
+    jfinal = final_coordinates[0]  # index de colonne du pixel de la graine.
+
+    recursion2(jfinal, ifinal, ncolumns, nlines, image, color)  # recursion colore l'image à partir du pixel de la graine.
+    image.show()
+    image.save(f"{name_image[:-4]}_RGB_colorized.jpg", "JPEG")
+    return
+
+
+
+def colorier_image_echelle_gris(name_image):
+    """color_image_grey_scale permet à l'utilisateur de colorier une image avec des valeurs L / une échelle de gris.
+
+        Étapes du programme :
+        1) Vous entrez le nom d'une image jpeg.
+        2) Le programme vous demandera d'entrer une valeur de gris correspondant
+        à l'intensité de gris que vous souhaitez utiliser.
+        3) Il vous demandera ensuite les coordonnées du pixel de la graine.
+        Vous aurez le choix de valider ou non la position de la graine et de réessayer.
+        
+        Codes de niveaux de gris pour colorier le minion :
+        - noir : 0
+        - blanc : 255
+    """
+    import sys
+    sys.setrecursionlimit(5000)  # Définit la limite de récursions à 5000.
+    image = Image.open(name_image)
+    
+    assert image.format == "JPEG", "Argument invalide : Doit être une image au format JPEG. Veuillez relancer le programme."
+
+    if image.mode != "L":
+        image.convert("L")  # Conversion de l'image au format L (échelle de gris).
+
+    size = image.size
+    nlines = size[1]  # nlines = hauteur de l'image/nombre de lignes de pixels.
+    ncolumns = size[0]  # ncolumns = largeur de l'image/nombre de colonnes de pixels.
+
+    color = int(input("Entrez la valeur de gris -entre 0 et 255- de l'échelle de gris que vous souhaitez utiliser (par exemple -> 100) :"))  # L'utilisateur écrit la couleur souhaitée.
+    assert color >= 0 and color <= 255, "Entrée invalide : Doit être un seul entier entre 0 et 255. Veuillez relancer le programme."
+    
+    firstcoord = coord_to_tuple2(input(f"Entrez les coordonnées pour la coloration entre {size} (par exemple -> x,y) :"))  # L'utilisateur écrit les premières coordonnées souhaitées pour la graine.
+    assert (len(firstcoord) == 2 and
+           (type(firstcoord[0]) == int and type(firstcoord[1]) == int) and
+           (firstcoord[0] >= 0 and firstcoord[0] <= ncolumns and firstcoord[1] >= 0 and firstcoord[1] <= nlines)
+           ),"Entrée invalide : Doit être deux entiers dans les limites de l'image. Veuillez relancer le programme."    
+    final_coordinates = right_seed2(firstcoord, image, color)  # right_seed renvoie le tuple des coordonnées finales de la graine.
+
+    ifinal = final_coordinates[1]  # index de ligne du pixel de la graine.
+    jfinal = final_coordinates[0]  # index de colonne du pixel de la graine.
+
+    recursion2(jfinal, ifinal, ncolumns, nlines, image, color)  # recursion colore l'image à partir du pixel de la graine.
+    image.show()
+    image.save(f"{name_image[:-4]}_L_colorized.jpg", "JPEG")
+    return
+
