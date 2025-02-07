@@ -1,100 +1,108 @@
-def creation_table_vide(n):
+
+##on commence par créer des tables que nous pourrons utiliser pour les asserts dans différents cas de figures
+
+##création d'un tableau vide
+def creation_table_vide(n): 
     tablev=[[" " for j in range(n)]for i in range(n)]
     for k in range(n):
         print(tablev[k],end="\n")
     return tablev
 
+#création d'un tableau entièrement pleine
 def creation_table_pleine(n):
-    tablep=[["0" for j in range(n)]for i in range(n)]
+    tablep=[["X" for j in range(n)]for i in range(n)]
     for k in range(n):
         print(tablep[k],end="\n")
     return tablep
 
+#création de trois tableaux à paternes
 def creation_table_Occupée1():
-    tableO1=[[" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]]
+    tableO1=[[" "," "," "," "," "," "," "," "," "," "],
+            [" "," "," "," "," "," "," "," ","O"," "],
+            [" "," "," "," "," "," "," ","O","O"," "],
+            [" "," "," "," "," "," "," ","O"," "," "],
+            [" "," "," "," ","O","O","O","O"," "," "],
+            [" "," "," "," ","O"," "," "," "," "," "],
+            [" "," ","O","O","O"," "," "," "," "," "],
+            [" "," ","O"," "," "," "," "," "," "," "],
+            [" ","O","O"," "," "," "," "," "," "," "],
+            [" ","O"," "," "," "," "," "," "," "," "]]
     print(tableO1)
     return tableO1
 
 def creation_table_Occupee2():
-    tableO2=[[" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
+    tableO2=[[" "," "," "," "," "," "," "," "," "," "],
+            [" "," "," "," ","O"," "," "," "," "," "],
+            [" "," "," ","O","O"," "," "," "," "," "],
+            [" "," "," ","O","O","O","O"," "," "," "],
+            [" "," "," ","O"," "," ","O"," "," "," "],
+            [" "," "," ","O"," "," ","0"," "," "," "],
+            [" "," "," ","0"," ","","0"," "," "," "],
+            [" "," "," ","0","O","O"," "," "," "," "],
+            [" "," "," "," ","O"," "," "," "," "," "],
             [" "," "," "," "," "," "," "," "," "," "]]
     print(tableO2)
     return tableO2
 
 def creation_table_Occupée3():
-    tableO3=[[" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]
-            [" "," "," "," "," "," "," "," "," "," "]]
+    tableO3=[["O"," "," "," "," "," "," ","O"," "," "],
+            ["O"," "," "," "," "," "," ","O"," "," "],
+            ["O"," ","O"," "," "," "," ","O"," "," "],
+            ["O","O","O"," "," "," ","O","O"," "," "],
+            [" "," ","O"," "," "," "," ","O","O"," "],
+            [" "," ","O","O"," "," "," "," ","O","O"],
+            [" "," "," ","O"," "," "," "," "," "," "],
+            [" "," "," ","O"," "," "," "," "," "," "],
+            [" "," "," ","O"," "," "," "," "," "," "],
+            [" "," "," ","O"," "," "," "," "," "," "]]
     print(tableO3)
     return tableO3
 
-def ite(j,i):
-    ask=input("quelle table voulez-vous remplir ? Entrez '1' pour une table pleine, entrez '2' pour une table vide, entrez '3', '4' ou '5' pour une table semie occupée")
-    while ask!='1' and ask!='2' and ask!='3' and ask!='4' and ask!='5':
+
+#definition de la fonction ded épart qui va être appelée pour lancer le programme. C'est une fonction itérative qui appelle une récursivité.
+def ite(j,i,n):
+    emp=""
+    ask=int(input("quelle table voulez-vous remplir ? Entrez 1 pour une table pleine, entrez 2 pour une table vide, entrez 3, 4 ou 5 pour une table semie occupée   "))
+    while (ask!=1) and (ask!=2) and (ask!=3) and (ask!=4) and (ask!=5):
         print("ce tableau n'existe pas veuillez choisir une autre réponse:")
-        ask=input("quelle table voulez-vous remplir ? Entrez '1' pour une table pleine, entrez '2' pour une table vide, entrez '3', '4' ou '5' pour une table semie occupée")
-    if ask=='1':
+        ask=input("quelle table voulez-vous remplir ? Entrez '1' pour une table pleine, entrez '2' pour une table vide, entrez '3', '4' ou '5' pour une table semie occupée   ")
+    if ask==1:
         table=creation_table_pleine(n)
-    if ask=='2':
+    if ask==2:
         table=creation_table_vide(n)
-    if ask=='3':
+    if ask==3:
         table=creation_table_Occupée1()
-    if ask=='4':
+    if ask==4:
         table=creation_table_Occupée2()
-    if ask=='5':
+    if ask==5:
         table=creation_table_Occupée3()
     if i<0 or i>len(table) or j<0 or j>len(table):
         print("cette case n'existe pas, veuillez entrer d'autres coordonées la prochaine fois")
+        return
     else:
         emp=table[j][i]
-        recursion(j,i,table)
+        recursion(j,i,table,emp)
+        for k in range(len(table)):
+            print(table[k],end="\n")
+    return
 
 
-def recursion(j, i, table):
+def recursion(j, i, table, emp):
     if j-1 < 0 or j+1 > len(table) or i-1 < 0 or i+1 > len(table):
         table[j][i]="X"
         print(f"A la limite: ({j}, {i})")
-        print(recursion_count)
         return
     if table[j][i] != emp:  # Assuming that the initial table is empty
         print(f"case déjà remplie :({j}, {i})")
-        print(recursion_count)
         return
     table[j][i]="X"
-    if j + 1 <= len(table) and table[j+1][i] == emp:
-        recursion_count+=1
-        recursion(j + 1, i,table)
+    if j + 1 < len(table) and table[j+1][i] == emp:
+        recursion(j + 1, i, table, emp)
     if j - 1 >= 0 and table[j-1][i] == emp:
-        recursion_count+=1
-        recursion(j - 1, i, table)
-    if i + 1 <= len(table) and table[j][i+1] == emp:
-        recursion_count+=1
-        recursion(j, i + 1, table)
+        recursion(j - 1, i, table, emp)
+    if i + 1 < len(table) and table[j][i+1] == emp:
+        recursion(j, i + 1, table, emp)
     if i - 1 >= 0 and table[j][i-1] == emp:
-        recursion_count+=1
-        recursion(j, i - 1, table)
+        recursion(j, i - 1, table, emp)
     return
+
