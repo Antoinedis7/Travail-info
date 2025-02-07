@@ -3,35 +3,25 @@ from PIL import Image
 ## Etape 1
 
 import 1_simple as F
-##création de la table vide que nous allons utiliser dans la fonction
-def creation_table_vide(n): 
-    table=[[" " for j in range(n)]for i in range(n)]
-    for k in range(n):
-        print(table[k],end="\n")
-    return table
 
 
-##création d'un tableau entièrement plein (le résultat attendu après l'execution de notre fonction remplir_table_vide)
+    ##création d'un tableau entièrement plein (le résultat attendu après l'execution de notre fonction remplir_table_vide)
 def creation_table_pleine(n):
-## on crée donc un tableau par compréhension dont toutes la cases sont occupées par des "X"
+
+    ## on crée donc un tableau par compréhension dont toutes la cases sont occupées par des "X"
     tablep=[["X" for j in range(n)]for i in range(n)]
-#on ajuste sa forme afin d'avoir un rendu esthétique et on l'affiche (ce qui n'est pas obligatoire car il a été créé dans le but de vérifier une condition et non de présenter un résultat à l'utilisateur).
+
+    #on ajuste sa forme afin d'avoir un rendu esthétique et on l'affiche (ce qui n'est pas obligatoire car il a été créé dans le but de vérifier une condition et non de présenter un résultat à l'utilisateur).
     for k in range(n):
         print(tablep[k],end="\n")
-#enfin on le renvoie
+
+    #enfin on le renvoie
     return tablep
 
-#afin d'éviter d'avoir à recoder un asset lorsqu'on utilise cette fonction, on crée une fonction plus simple à appeller qui contient notre assert.
-def fonct_assert(j,i):
-    tablep=creation_table_pleine(10)
-    table=remplir_table_vide(j,i)
-    assert table==tablep,"Même les miracles prennent un peu de temps..."
-    return
-#il suffit maintenant d'appeller notre fonction nouvellement créée et de choisir ses arguments.
 
-table_vide = [[" " for i in range(10)] for j in range (10)]
-
-assert prog.remplir_table_vide(j,i,table_vide) == 
+    
+##il suffit maintenant de vérifier si notre fonction remplie sa mission.
+assert F.remplir_table_vide(j,i,table) == tablep,"Même les miracles prennent un peu de temps..."
 
 ## Etape 2
 
