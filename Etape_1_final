@@ -1,46 +1,100 @@
 def creation_table_vide(n):
-    table=[[" " for i in range(n)]for j in range(n)]
+    tablev=[[" " for j in range(n)]for i in range(n)]
     for k in range(n):
-        print(table[k],end="\n")
+        print(tablev[k],end="\n")
     return tablev
 
 def creation_table_pleine(n):
-    table=[["X" for i in range(n)]for j in range(n)]
+    tablep=[["0" for j in range(n)]for i in range(n)]
     for k in range(n):
-        print(table[k],end="\n")
+        print(tablep[k],end="\n")
     return tablep
 
-def creation_table_occupee(n):
-    al=rand(0,n)
-    table=[[" " for i in range(n-a) and "0" for i in range(a)]for j in range(a) and j in range(n-a)]
-    for k in range(n):
-        print(table[k],end="\n")
-    return tableo
+def creation_table_Occupée1():
+    tableO1=[[" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]]
+    print(tableO1)
+    return tableO1
 
-def recursion(j, i, columns, lines,):
-    input
-    global recursion_count
-    if j-1 < 0 or j+1 > columns or i-1 < 0 or i+1 > lines:
-        im.putpixel((j,i),125)
-        print(f"At the limit: ({j}, {i})")
+def creation_table_Occupee2():
+    tableO2=[[" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]]
+    print(tableO2)
+    return tableO2
+
+def creation_table_Occupée3():
+    tableO3=[[" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]
+            [" "," "," "," "," "," "," "," "," "," "]]
+    print(tableO3)
+    return tableO3
+
+def ite(j,i):
+    ask=input("quelle table voulez-vous remplir ? Entrez '1' pour une table pleine, entrez '2' pour une table vide, entrez '3', '4' ou '5' pour une table semie occupée")
+    while ask!='1' and ask!='2' and ask!='3' and ask!='4' and ask!='5':
+        print("ce tableau n'existe pas veuillez choisir une autre réponse:")
+        ask=input("quelle table voulez-vous remplir ? Entrez '1' pour une table pleine, entrez '2' pour une table vide, entrez '3', '4' ou '5' pour une table semie occupée")
+    if ask=='1':
+        table=creation_table_pleine(n)
+    if ask=='2':
+        table=creation_table_vide(n)
+    if ask=='3':
+        table=creation_table_Occupée1()
+    if ask=='4':
+        table=creation_table_Occupée2()
+    if ask=='5':
+        table=creation_table_Occupée3()
+    if i<0 or i>len(table) or j<0 or j>len(table):
+        print("cette case n'existe pas, veuillez entrer d'autres coordonées la prochaine fois")
+    else:
+        emp=table[j][i]
+        recursion(j,i,table)
+
+
+def recursion(j, i, table):
+    if j-1 < 0 or j+1 > len(table) or i-1 < 0 or i+1 > len(table):
+        table[j][i]="X"
+        print(f"A la limite: ({j}, {i})")
         print(recursion_count)
         return
-    
-    if im.getpixel((j,i)) < 180:  # Assuming the image background is white
-        print(f"Pixel already colored :({j}, {i})")
+    if table[j][i] != emp:  # Assuming that the initial table is empty
+        print(f"case déjà remplie :({j}, {i})")
         print(recursion_count)
         return
-    im.putpixel((j,i),125)
-    if j + 1 <= columns and im.getpixel((j + 1, i)) >= 180:
+    table[j][i]="X"
+    if j + 1 <= len(table) and table[j+1][i] == emp:
         recursion_count+=1
-        recursion(j + 1, i, columns, lines, im)
-    if j - 1 >= 0 and im.getpixel((j - 1, i)) >= 180:
+        recursion(j + 1, i,table)
+    if j - 1 >= 0 and table[j-1][i] == emp:
         recursion_count+=1
-        recursion(j - 1, i, columns, lines, im)
-    if i + 1 <= lines and im.getpixel((j, i + 1)) >= 180:
+        recursion(j - 1, i, table)
+    if i + 1 <= len(table) and table[j][i+1] == emp:
         recursion_count+=1
-        recursion(j, i + 1, columns, lines, im)
-    if i - 1 >= 0 and im.getpixel((j, i - 1)) >= 180:
+        recursion(j, i + 1, table)
+    if i - 1 >= 0 and table[j][i-1] == emp:
         recursion_count+=1
-        recursion(j, i - 1, columns, lines, im)
+        recursion(j, i - 1, table)
     return
