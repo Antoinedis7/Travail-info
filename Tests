@@ -1,5 +1,3 @@
-#"C:\Users\33768\OneDrive\Bureau\CPES\INFO\Projet\INFO_Projet_1_BLASCO_DIS_HOUZE\Essais_BLASCO_DIS_HOUZE\Exemples_RGB_BLASCO_DIS_HOUZE\GIF_minion_coloration.gif"
-
 import Programme_BLASCO_DIS_HOUZE as prog
 from PIL import Image
 ## Etape 1
