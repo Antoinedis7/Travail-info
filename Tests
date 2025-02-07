@@ -11,6 +11,7 @@ def creation_table_pleine(n):
         print(tablep[k],end="\n")
 #enfin on le renvoie
     return tablep
+
 #afin d'éviter d'avoir à recoder un asset lorsqu'on utilise cette fonction, on crée une fonction plus simple à appeller qui contient notre assert.
 def fonct_assert(j,i):
     tablep=creation_table_pleine(10)
