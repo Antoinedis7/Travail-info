@@ -20,7 +20,9 @@ def fonct_assert(j,i):
     return
 #il suffit maintenant d'appeller notre fonction nouvellement créée et de choisir ses arguments.
 
+table_vide = [[" " for i in range(10)] for j in range (10)]
 
+assert prog.remplir_table_vide(j,i,table_vide) == 
 
 ## Etape 2
 
